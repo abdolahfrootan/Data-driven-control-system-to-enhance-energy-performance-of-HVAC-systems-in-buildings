@@ -18,7 +18,7 @@ with open(Solar_rad_file,"r") as f:
     for line in f:
         words=line.split(";")
         for i in range(6):
-            Solar_incident_radiation=np.append(Solar_incident_radiation,float(words[3]))
+            Solar_incident_radiation=np.append(Solar_incident_radiation,float(words[3])/6.)
 
 temperature='temperature_t_step.csv'
 temperatures=np.array([])
@@ -37,7 +37,7 @@ def module_efficiency(T_cell):
     return efficiency
 
 def PV(Solar_incident_radiation,module_efficiency,DC_to_AC_efficiency,area=231,fraction=1):
-    Pv=area*fraction*Solar_incident_radiation*module_efficiency*DC_to_AC_efficiency*10**(-3)
+    Pv=area*fraction*Solar_incident_radiation*module_efficiency*DC_to_AC_efficiency*10**(-3)*(Solar_incident_radiation>0.3/6.)
     Pv=(Pv<36/6)*Pv+(Pv>36/6)*36/6 #total production of energy is less than 36 kW
     return Pv
 
